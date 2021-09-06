@@ -13,7 +13,7 @@ setup(
     url='https://www.stitchdata.com',
     classifiers=['Programming Language :: Python :: 3 :: Only'],
     install_requires=[
-        'tap-framework==0.0.5'
+        'tap-framework>=0.0.5'
     ],
     entry_points='''
         [console_scripts]
