@@ -109,6 +109,13 @@ class BaseStream(base):
 
                 counter.increment()
 
+                sent_date = obj.get("SentDate")
+
+                if sent_date and sent_date < '2021-09-01':
+                    LOGGER.info("Skipping campaign sent at {}".format(sent_date))
+                    continue
+
+                LOGGER.info("Processing campaign sent at {}".format(sent_date))
                 for substream in substreams:
                     substream.sync_data(parent=obj)
 
@@ -222,8 +229,6 @@ class DatePaginatedChildStream(ChildStream):
 
             if start_date is not None:
                 params['date'] = start_date
-            else:
-                params['date'] = '2021-01-01 00:00'
 
             result = self.client.make_request(
                 url, self.API_METHOD, params=params)
