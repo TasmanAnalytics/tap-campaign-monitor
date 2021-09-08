@@ -34,6 +34,7 @@ def get_streams_to_replicate(config, state, catalog, client):
     list_substreams = []
 
     if not catalog:
+        LOGGER.info("No catalog provided, no streams to replicate")
         return streams, campaign_substreams, list_substreams
 
     for stream_catalog in catalog.streams:
