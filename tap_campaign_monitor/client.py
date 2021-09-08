@@ -52,7 +52,7 @@ class CampaignMonitorClient:
             params=params,
             json=body)
 
-        if response.status_code in [429, 504]:
+        if response.status_code in [429, 504, 500]:
             if base_backoff > 120:
                 raise RuntimeError('Backed off too many times, exiting!')
 
