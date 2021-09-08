@@ -222,6 +222,8 @@ class DatePaginatedChildStream(ChildStream):
 
             if start_date is not None:
                 params['date'] = start_date
+            else:
+                params['date'] = '2021-01-01 00:00'
 
             result = self.client.make_request(
                 url, self.API_METHOD, params=params)
