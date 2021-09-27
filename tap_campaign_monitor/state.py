@@ -62,7 +62,7 @@ def incorporate_page(state, table, field, value):
         new_state['bookmarks'] = {}
 
     if(new_state['bookmarks'].get(table, {}).get('last_page') is None or
-       new_state['bookmarks'].get(table, {}).get('last_page') < value):
+       int(new_state['bookmarks'].get(table, {}).get('last_page')) < value):
         new_state['bookmarks'][table] = {
             'field': field,
             'last_page': parsed,
