@@ -10,8 +10,8 @@ from singer.transform import Transformer, VALID_DATETIME_FORMATS, \
 from singer.utils import strftime
 
 from tap_framework.streams import BaseStream as base
-from tap_campaign_monitor.state import incorporate, save_state, \
-    get_last_record_value_for_table
+from tap_campaign_monitor.state import incorporate, incorporate_page, save_state, \
+    get_last_record_value_for_table, get_last_page_value_for_table
 
 LOGGER = singer.get_logger()
 
@@ -158,9 +158,10 @@ class PaginatedChildStream(ChildStream):
             raise RuntimeError('Cannot sync a subobject of null!')
 
         table = self.TABLE
+        state_key = "{}.{}".format(self.get_parent_id(parent), table)
 
         has_data = True
-        page = 1
+        page = get_last_page_value_for_table(self.state, state_key)
         page_size = 1000
         total_pages = -1
 
@@ -169,13 +170,19 @@ class PaginatedChildStream(ChildStream):
                 'https://api.createsend.com/api/v3.2{api_path}'.format(
                     api_path=self.get_api_path_for_child(parent)))
 
+            # Defaults to 'orderfield'='email', 'orderdirection'='asc'
             params = {
                 'page': page,
                 'pagesize': page_size,
             }
 
-            result = self.client.make_request(
-                url, self.API_METHOD, params=params)
+            try:
+                result = self.client.make_request(
+                    url, self.API_METHOD, params=params)
+            except Exception as e:
+                LOGGER.error("Request for page {} of {} failed with: {}".format(page, table, str(e)))
+                save_state(self.state)
+                break
 
             total_pages = result.get('NumberOfPages')
 
@@ -185,11 +192,19 @@ class PaginatedChildStream(ChildStream):
 
             with singer.metrics.record_counter(endpoint=table) as counter:
                 for obj in data:
+                    to_write = self.incorporate_parent_id(obj, parent)
                     singer.write_records(
                         table,
                         [self.incorporate_parent_id(obj, parent)])
 
+                    self.state = incorporate_page(self.state,
+                                             state_key,
+                                             'Page',
+                                             page)
+
                     counter.increment()
+
+            save_state(self.state)
 
             if page >= total_pages:
                 has_data = False
@@ -230,8 +245,13 @@ class DatePaginatedChildStream(ChildStream):
             if start_date is not None:
                 params['date'] = start_date
 
-            result = self.client.make_request(
-                url, self.API_METHOD, params=params)
+            try:
+                result = self.client.make_request(
+                    url, self.API_METHOD, params=params)
+            except Exception as e:
+                LOGGER.error("Request for page {} of {} failed with: {}".format(page, table, str(e)))
+                save_state(self.state)
+                break
 
             total_pages = result.get('NumberOfPages')
 

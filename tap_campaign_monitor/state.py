@@ -16,7 +16,6 @@ def get_last_record_value_for_table(state, table):
 
     return parse(last_value)
 
-
 def incorporate(state, table, field, value):
     if value is None:
         return state
@@ -37,6 +36,39 @@ def incorporate(state, table, field, value):
 
     return new_state
 
+# TODO: this needs a proper refactoring, but ¯\_(ツ)_/¯ for now
+def get_last_page_value_for_table(state, table):
+    last_value = state.get('bookmarks', {}) \
+                      .get(table, {}) \
+                      .get('last_page')
+
+    if last_value is None:
+        return 1
+    
+    try:
+        return int(last_value)
+    except:
+        return 1
+
+def incorporate_page(state, table, field, value):
+    if value is None:
+        return state
+
+    new_state = state.copy()
+
+    parsed = str(value)
+
+    if 'bookmarks' not in new_state:
+        new_state['bookmarks'] = {}
+
+    if(new_state['bookmarks'].get(table, {}).get('last_page') is None or
+       new_state['bookmarks'].get(table, {}).get('last_page') < value):
+        new_state['bookmarks'][table] = {
+            'field': field,
+            'last_page': parsed,
+        }
+
+    return new_state
 
 def save_state(state):
     if not state:

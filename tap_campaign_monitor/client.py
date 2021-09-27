@@ -37,7 +37,7 @@ class CampaignMonitorClient:
 
         return tap_campaign_monitor.timezones.from_string(timezone)
 
-    def make_request(self, url, method, base_backoff=30,
+    def make_request(self, url, method, base_backoff=2,
                      params=None, body=None):
 
         LOGGER.info("Making {} request to {}".format(method, url))
@@ -53,7 +53,7 @@ class CampaignMonitorClient:
             json=body)
 
         if response.status_code in [429, 504, 500]:
-            if base_backoff > 120:
+            if base_backoff > 600:
                 raise RuntimeError('Backed off too many times, exiting!')
 
             LOGGER.warn('Sleeping for {} seconds and trying again'
