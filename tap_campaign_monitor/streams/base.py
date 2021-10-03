@@ -87,6 +87,8 @@ class BaseStream(base):
         return self.sync_data(substreams=substreams)
 
     def sync_data(self, substreams=None):
+        start_date = self.config.get('start_date')
+        end_date = self.config.get('end_date')
         if substreams is None:
             substreams = []
 
@@ -111,7 +113,11 @@ class BaseStream(base):
 
                 sent_date = obj.get("SentDate")
 
-                if sent_date and sent_date < '2021-09-01':
+                if sent_date and start_date and sent_date < start_date:
+                    LOGGER.info("Skipping campaign sent at {}".format(sent_date))
+                    continue
+
+                if sent_date and end_date and sent_date > end_date:
                     LOGGER.info("Skipping campaign sent at {}".format(sent_date))
                     continue
 
