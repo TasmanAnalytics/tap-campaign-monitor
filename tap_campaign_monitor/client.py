@@ -22,8 +22,15 @@ class CampaignMonitorClient:
         LOGGER.info("Refreshing access token")
         url = "https://api.createsend.com/oauth/token"
         data = {'grant_type': 'refresh_token', 'refresh_token': self.config['refresh_token']}
-        response = requests.request("POST", url, data=data)
-        self.access_token = response.json()['access_token']
+        try:
+            response = requests.request("POST", url, data=data)
+            self.access_token = response.json()['access_token']
+        except Exception as e:
+            LOGGER.error("Failed to refresh access token")
+            LOGGER.error("{} {}".format(response.status_code, response.reason))
+            LOGGER.error(response.content)
+            raise e
+
 
     def get_timezone(self):
         url = (
