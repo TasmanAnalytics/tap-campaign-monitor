@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "CampaignID": {
+        "type": "string"
+    },
+    "ListID": {
+        "type": "string"
+    },
+    "SegmentID": {
+        "type": "string"
+    },
+    "Title": {
+        "type": "string"
+    }
+  }
+}
+      
