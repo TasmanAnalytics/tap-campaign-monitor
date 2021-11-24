@@ -4,17 +4,17 @@
     "CampaignID": {
         "type": "string"
     },
-    "ListID": {
-        "type": [
-          "null",
-          "string"
-        ]
-    },
     "SegmentID": {
       "type": [
         "null",
         "string"
       ]
+    },
+    "ListID": {
+        "type": [
+          "null",
+          "string"
+        ]
     },
     "Title": {
       "type": [

@@ -4,7 +4,7 @@ import singer
 LOGGER = singer.get_logger()
 
 class CampaignSegmentsStream(ChildStream):
-    KEY_PROPERTIES = ['CampaignID', 'ListID', 'SegmentID', 'Title']
+    KEY_PROPERTIES = ['CampaignID']#, 'ListID', 'SegmentID', 'Title']
 
     TABLE = 'campaign_segments'
     REQUIRES = ['campaigns']
