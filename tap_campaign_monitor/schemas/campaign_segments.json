@@ -5,13 +5,22 @@
         "type": "string"
     },
     "ListID": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
     },
     "SegmentID": {
-        "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "Title": {
-        "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
 }

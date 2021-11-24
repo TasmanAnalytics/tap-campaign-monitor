@@ -35,8 +35,6 @@ class CampaignSegmentsStream(ChildStream):
 
         response = self.client.make_request(url, self.API_METHOD)
 
-        result = {"Results": []}
-
         if 'Segments' in response:
             # Take the first Segment in the object
             if len(response['Segments']) > 0:
@@ -44,7 +42,9 @@ class CampaignSegmentsStream(ChildStream):
                                'ListID': response['Segments'][0]['ListID'],
                                'Title': response['Segments'][0]['Title']
                               }
-                result['Results'].append(res_segment)
+                result = {"Results": [res_segment]}
+            else:
+                result = {"Results": []}
 
         data = self.get_stream_data(result)
 
