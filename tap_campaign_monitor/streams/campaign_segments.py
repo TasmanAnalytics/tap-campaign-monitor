@@ -42,7 +42,7 @@ class CampaignSegmentsStream(ChildStream):
                                'ListID': response['Segments'][0]['ListID'],
                                'Title': response['Segments'][0]['Title']
                               }
-                result = {"Results": [res_segment]}
+                result = {"Results": res_segment}
             else:
                 result = {"Results": []}
         
