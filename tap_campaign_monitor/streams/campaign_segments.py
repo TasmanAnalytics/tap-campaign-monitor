@@ -38,11 +38,12 @@ class CampaignSegmentsStream(ChildStream):
         result = {"Results": []}
 
         if 'Segments' in response:
-            for segment in response['Segments']:
-                res_segment = {'SegmentID': segment['SegmentID'], 
-                               'ListID': segment['ListID'],
-                               'Title': segment['Title']
-                            }
+            # Take the first Segment in the object
+            if len(response['Segments']) > 0:
+                res_segment = {'SegmentID': response['Segments'][0]['SegmentID'], 
+                               'ListID': response['Segments'][0]['ListID'],
+                               'Title': response['Segments'][0]['Title']
+                              }
                 result['Results'].append(res_segment)
 
         data = self.get_stream_data(result)
