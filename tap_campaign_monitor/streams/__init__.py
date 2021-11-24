@@ -15,6 +15,8 @@ from tap_campaign_monitor.streams.campaign_summary \
     import CampaignSummaryStream
 from tap_campaign_monitor.streams.campaign_unsubscribes \
     import CampaignUnsubscribesStream
+from tap_campaign_monitor.streams.campaign_segments \
+    import CampaignSegmentsStream
 
 from tap_campaign_monitor.streams.lists import ListsStream
 from tap_campaign_monitor.streams.list_active_subscribers \
@@ -41,6 +43,7 @@ AVAILABLE_STREAMS = [
     CampaignSpamComplaintsStream,
     CampaignSummaryStream,
     CampaignUnsubscribesStream,
+    CampaignSegmentsStream,
 
     ListsStream,
     ListActiveSubscribersStream,
