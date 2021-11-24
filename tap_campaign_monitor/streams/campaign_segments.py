@@ -45,6 +45,8 @@ class CampaignSegmentsStream(ChildStream):
                 result = {"Results": [res_segment]}
             else:
                 result = {"Results": []}
+        
+        LOGGER.info(f'Segment data: {result}')
 
         data = self.get_stream_data(result)
 
