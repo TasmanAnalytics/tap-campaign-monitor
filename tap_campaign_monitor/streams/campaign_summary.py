@@ -35,6 +35,8 @@ class CampaignSummaryStream(ChildStream):
 
         result = self.client.make_request(url, self.API_METHOD)
 
+        LOGGER.info(f'Summary result: {result}')
+        
         data = self.get_stream_data(result)
 
         with singer.metrics.record_counter(endpoint=table) as counter:
