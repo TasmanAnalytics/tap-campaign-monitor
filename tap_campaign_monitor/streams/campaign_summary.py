@@ -34,8 +34,6 @@ class CampaignSummaryStream(ChildStream):
                 api_path=self.get_api_path_for_child(parent)))
 
         result = self.client.make_request(url, self.API_METHOD)
-
-        LOGGER.info(f'Summary result: {result}')
         
         data = self.get_stream_data(result)
 
