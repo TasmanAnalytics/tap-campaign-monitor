@@ -38,13 +38,12 @@ class CampaignSegmentsStream(ChildStream):
         if 'Segments' in response:
             # Take the first Segment in the object
             if len(response['Segments']) > 0:
-                res_segment = {'SegmentID': response['Segments'][0]['SegmentID'], 
+                result = {'SegmentID': response['Segments'][0]['SegmentID'], 
                                'ListID': response['Segments'][0]['ListID'],
                                'Title': response['Segments'][0]['Title']
                               }
-                result = {"Results": [res_segment]}
             else:
-                result = {"Results": []}
+                result = {}
         
         LOGGER.info(f'Segment data: {result}')
 
